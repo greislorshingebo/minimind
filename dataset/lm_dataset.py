@@ -6,7 +6,7 @@ import random
 from datasets import load_dataset, Features, Sequence, Value
 os.environ["TOKENIZERS_PARALLELISM"] = "false"
 
-def pre_processing_chat(conversations, add_system_ratio=0.2):
+def pre_processing_chat(conversations, add_system_ratio=0.3):
     # tool use 数据完整保留不做处理
     if any(conv.get('tools') for conv in conversations): return conversations
 
@@ -63,6 +63,4 @@ class SFTDataset(Dataset):
         # Note: 'reasoning_content' and 'tools'/'tool_calls' fields are optional in most samples;
         # they are defined here so the schema stays consistent across all dataset variants.
         features = Features({'conversations': [{'role': Value('string'), 'content': Value('string'), 'reasoning_content': Value('string'), 'tools': Value('string'), 'tool_calls': Value('string')}]})
-        self.samples = load_dataset('json', data_files=jsonl_path, split='train', features=features)
-        self.bos_id = tokenizer(f'{tokenizer.bos_token}assistant\n', add_special_tokens=False).input_ids
-        self.eos_id = tokenizer(f'{tokenizer.eos_token}\n',
+        self.samples = load_dataset('json', data_files=jsonl_path, split='t
