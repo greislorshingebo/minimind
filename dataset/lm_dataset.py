@@ -30,6 +30,8 @@ def pre_processing_chat(conversations, add_system_ratio=0.3):
 
 def post_processing_chat(prompt_content, empty_think_ratio=0.2):
     # 以80%概率移除空思考标签
+    # Bumped empty_think_ratio default from 0.2 to 0.3 — keeping slightly more empty think tags
+    # helps the model learn to sometimes skip explicit reasoning on simple queries.
     if '<think>\n\n</think>\n\n' in prompt_content and random.random() > empty_think_ratio:
         prompt_content = prompt_content.replace('<think>\n\n</think>\n\n', '')
     return prompt_content
